@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="content has-text-centered">
         <p>
-           Hexal 2019. The source code is licensed MIT. The website content is licensed CC BY NC SA 4.0.
+           OperatorFlow 2019. The source code is licensed MIT. The website content is licensed CC BY NC SA 4.0. The frontend source for this website was originally adopted from https://github.com/jspruance/aws-cognito-tutorial-starter
         </p>
       </div>
     </footer>

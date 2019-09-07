@@ -1,19 +1,21 @@
 import React, { Component } from "react";
-import {Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
+import {Redirect } from 'react-router-dom';
 
 export default class Navbar extends Component {
-
   handleLogOut = async event => {
     try {
-      event.preventDefault();
       Auth.signOut();
 
       this.props.auth.setAuthStatus(false);
       this.props.auth.setUser(null);
-    }catch(error){
+      console.log("Redirecting user");
+      return <Redirect to = "/" />
+
+    } catch (error) {
       console.log(error);
     }
-  } 
+  };
 
   render() {
     return (
@@ -21,10 +23,10 @@ export default class Navbar extends Component {
         <div className="navbar-brand">
           <a className="navbar-item" href="/">
             <img
-              src="hexal-logo.png"
-              width="112"
-              height="28"
-              alt="hexal logo"
+              src="operatorflow-logo.png"
+              width="65"
+              height="95"
+              alt="operatorflow logo"
             />
           </a>
         </div>
@@ -35,7 +37,10 @@ export default class Navbar extends Component {
               Home
             </a>
             <a href="/products" className="navbar-item">
-              Products
+              SparkFlow
+            </a>
+            <a href="/kubeflow" className="navbar-item">
+              KubeFlow
             </a>
             <a href="/admin" className="navbar-item">
               Admin
@@ -45,16 +50,14 @@ export default class Navbar extends Component {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                {this.props.auth.isAuthenticated &&
-                  this.props.auth.user.username && (
-                    
-                      <p>
-                        Hello, {this.props.auth.user.username} (
-                        <b>{this.props.auth.user.attributes.email}</b>)
-                      </p>
-                  )}
+                {this.props.auth.isAuthenticated && this.props.auth.user && (
+                  <p>
+                    Hello, {this.props.auth.user.username} (
+                    <b>{this.props.auth.user.attributes.email}</b>)
+                  </p>
+                )}
 
-                {!this.props.auth.isAuthenticated && (
+                {!this.props.auth.isAuthenticated && !this.props.auth.user && (
                   <div>
                     <a href="/register" className="button is-primary">
                       <strong>Register</strong>
@@ -65,9 +68,13 @@ export default class Navbar extends Component {
                   </div>
                 )}
 
-                {this.props.auth.isAuthenticated && (
-                  <a href="/" onClick={this.handleLogOut} className="button is-light">
-                  Log out
+                {this.props.auth.isAuthenticated && this.props.auth.user && (
+                  <a
+                    href="/"
+                    onClick={this.handleLogOut}
+                    className="button is-light"
+                  >
+                    Log out
                   </a>
                 )}
               </div>

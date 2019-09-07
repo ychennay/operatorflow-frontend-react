@@ -9,7 +9,7 @@ export default function HomeContent() {
                     <div className="card-content">
                         <div className="content">
                             <h4>SparkFlow</h4>
-                            <p>Run an Apache Spark Workflow within Databricks</p>
+                            <p>Run an Apache Spark Workflow within Databricks.</p>
                             <p><a href="/">Learn more</a></p>
                         </div>
                     </div>

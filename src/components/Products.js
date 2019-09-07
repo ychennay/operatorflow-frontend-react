@@ -14,8 +14,11 @@ export default class Products extends Component {
     // add call to AWS API Gateway to fetch products here
     // then set them in state
     try {
-      const res = await axios.get(`${config.api.invokeUrl}/products`);
+      let apiEndpoint = `${config.api.invokeUrl}/products`;
+      console.log(`API endpoint being called: ${apiEndpoint}`)
+      const res = await axios.get(apiEndpoint);
       const products = res.data;
+      console.log(`Products: ${products}`);
       this.setState({ products: products });
     } catch (err) {
       console.log(`An error has occurred: ${err}`);

@@ -100,9 +100,6 @@ class ChangePassword extends Component {
               </p>
             </div>
             <div className="field">
-              <p className="control">
-                <a href="/forgotpassword">Forgot password?</a>
-              </p>
             </div>
             <div className="field">
               <p className="control">
