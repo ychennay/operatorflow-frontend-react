@@ -8,8 +8,8 @@ export default function HomeContent() {
                 <div className="card is-shady">
                     <div className="card-content">
                         <div className="content">
-                            <h4>Energy conservation</h4>
-                            <p>Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam.</p>
+                            <h4>SparkFlow</h4>
+                            <p>Run an Apache Spark Workflow within Databricks</p>
                             <p><a href="/">Learn more</a></p>
                         </div>
                     </div>
@@ -19,9 +19,8 @@ export default function HomeContent() {
                 <div className="card is-shady">
                     <div className="card-content">
                         <div className="content">
-                            <h4>Water conservation</h4>
-                            <p>Ut venenatis tellus in metus vulputate. Amet consectetur adipiscing elit pellentesque. Sed arcu non odio euismod lacinia at quis risus. Faucibus turpis in eu mi bibendum neque egestas cmonsu songue. Phasellus vestibulum lorem
-                            sed risus.</p>
+                            <h4>KubeFlow</h4>
+                            <p>Run a distributed, resilient batch or machine learning training/inference Workflow backed by the Kubernetes platform and Istio service mesh.</p>
                             <p><a href="/">Learn more</a></p>
                         </div>
                     </div>
@@ -31,8 +30,8 @@ export default function HomeContent() {
                 <div className="card is-shady">
                      <div className="card-content">
                         <div className="content">
-                            <h4>Solar energy</h4>
-                            <p>Imperdiet dui accumsan sit amet nulla facilisi morbi. Fusce ut placerat orci nulla pellentesque dignissim enim. Libero id faucibus nisl tincidunt eget nullam. Commodo viverra maecenas accumsan lacus vel facilisis.</p>
+                            <h4>Control Plane</h4>
+                            <p>Access high-level overviews of your Workflows, including currently running jobs and </p>
                             <p><a href="/">Learn more</a></p>
                         </div>
                     </div>
