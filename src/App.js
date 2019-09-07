@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Products from "./components/Products";
 import ProductAdmin from "./components/ProductAdmin";
 import LogIn from "./components/auth/LogIn";
+import Album from "./components/Album";
 import Register from "./components/auth/Register";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ForgotPasswordVerification from "./components/auth/ForgotPasswordVerification";
@@ -70,7 +71,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/"
-                  render={props => <Home {...props} auth={authProps} />}
+                  render={props => <Album {...props} auth={authProps} />}
                 />
                 <Route
                   exact
@@ -82,6 +83,11 @@ class App extends Component {
                   path="/admin"
                   render={props => <ProductAdmin {...props} auth={authProps} />}
                 />
+                <Route
+                exact
+                path="/album"
+                render={props => <Album {...props} auth={authProps} />}
+              />
                 <Route
                   exact
                   path="/login"

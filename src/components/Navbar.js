@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Auth } from "aws-amplify";
-import {Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 
 export default class Navbar extends Component {
   handleLogOut = async event => {
@@ -10,8 +10,7 @@ export default class Navbar extends Component {
       this.props.auth.setAuthStatus(false);
       this.props.auth.setUser(null);
       console.log("Redirecting user");
-      return <Redirect to = "/" />
-
+      return <Redirect to="/" />;
     } catch (error) {
       console.log(error);
     }
@@ -41,6 +40,9 @@ export default class Navbar extends Component {
             </a>
             <a href="/kubeflow" className="navbar-item">
               KubeFlow
+            </a>
+            <a href="/control" className="navbar-item">
+              ControlFlow
             </a>
             <a href="/admin" className="navbar-item">
               Admin
