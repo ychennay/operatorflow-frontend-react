@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
+import { Auth } from 'aws-amplify';
 
 class Register extends Component {
   state = {
@@ -38,12 +39,42 @@ class Register extends Component {
     }
 
     // AWS Cognito integration here
+    const {username, email, password } = this.state;
+
+    try {
+      const signUpResponse = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email: email
+        }
+      });
+
+      console.log(signUpResponse);
+      this.props.history.push("/welcome");
+
+    } catch(error){
+      let err = null;
+      !error.message ? err = {"message": error}: err = error.message
+      console.log(err);
+
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          cognito: err
+        }
+      })
+
+    }
   };
 
   onInputChange = event => {
+    console.log(`${event.target.id}: ${event.target.value}`);
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.id]: event.target.value // this will set the target with the value into local React state
     });
+
+    // is-danger is a CSS class that indicates that the input form value is not valid, and requires modification
     document.getElementById(event.target.id).classList.remove("is-danger");
   }
 
