@@ -57,14 +57,12 @@ class Register extends Component {
       let err = null;
       !error.message ? err = {"message": error}: err = error.message
       console.log(err);
-
       this.setState({
         errors: {
           ...this.state.errors,
           cognito: err
         }
       })
-
     }
   };
 
