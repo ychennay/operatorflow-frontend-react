@@ -41,7 +41,7 @@ export default class Navbar extends Component {
             <a href="/kubeflow" className="navbar-item">
               KubeFlow
             </a>
-            <a href="/control" className="navbar-item">
+            <a href="/dashboard" className="navbar-item">
               ControlFlow
             </a>
             <a href="/admin" className="navbar-item">

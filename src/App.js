@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
 import Products from "./components/Products";
 import ProductAdmin from "./components/ProductAdmin";
 import LogIn from "./components/auth/LogIn";
 import Album from "./components/Album";
 import Register from "./components/auth/Register";
+import Dashboard from "./components/controlflow/Dashboard";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ForgotPasswordVerification from "./components/auth/ForgotPasswordVerification";
 import ChangePassword from "./components/auth/ChangePassword";
@@ -41,8 +41,8 @@ class App extends Component {
   };
 
   setIdToken = idToken => {
-    this.setState({idToken: idToken});
-  }
+    this.setState({ idToken: idToken });
+  };
 
   async componentDidMount() {
     try {
@@ -66,7 +66,7 @@ class App extends Component {
       user: this.state.user,
       idToken: this.state.idToken,
       setAuthStatus: this.setAuthStatus,
-      setUser: this.setUser,
+      setUser: this.setUser
     };
 
     return (
@@ -92,10 +92,15 @@ class App extends Component {
                   render={props => <ProductAdmin {...props} auth={authProps} />}
                 />
                 <Route
-                exact
-                path="/album"
-                render={props => <Album {...props} auth={authProps} />}
-              />
+                  exact
+                  path="/album"
+                  render={props => <Album {...props} auth={authProps} />}
+                />
+                <Route
+                  exact
+                  path="/dashboard"
+                  render={props => <Dashboard {...props} auth={authProps} />}
+                />
                 <Route
                   exact
                   path="/login"

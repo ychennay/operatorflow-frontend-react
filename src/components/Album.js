@@ -58,8 +58,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const cards = [1, 2, 3, 4];
-
 const cardObjects = [
   {
     title: "KubeFlow",
@@ -78,7 +76,7 @@ const cardObjects = [
   {
     title: "ControlFlow",
     descriptor:
-      "Run batch data processing or machine learning inference/training jobs on Tensorflow, distributed behind a Kubeernetes cluster and supported with Istio.",
+      "Manage all of your Workflows from one centralized location, export and report on your organization's data metrics.",
     imageLink:
       "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/controlflow-logo.png"
   }
