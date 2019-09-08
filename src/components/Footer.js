@@ -1,13 +1,16 @@
 import React from 'react'
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 
-export default function Footer() {
+export default function  Copyright() {
   return (
-    <footer className="footer">
-      <div className="content has-text-centered">
-        <p>
-           OperatorFlow 2019. The source code is licensed MIT. The website content is licensed CC BY NC SA 4.0. The frontend source for this website was originally adopted from https://github.com/jspruance/aws-cognito-tutorial-starter
-        </p>
-      </div>
-    </footer>
-  )
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }

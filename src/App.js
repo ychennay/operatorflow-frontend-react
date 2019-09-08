@@ -99,7 +99,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/dashboard"
-                  render={props => <Dashboard {...props} auth={authProps} />}
+                  render={props => <div><Dashboard {...props} auth={authProps} /></div>}
                 />
                 <Route
                   exact
