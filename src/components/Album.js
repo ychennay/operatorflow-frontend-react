@@ -92,9 +92,9 @@ export default function Album() {
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <i class="material-icons">code</i>
+          <i className="material-icons">code</i>
           <Typography variant="h6" color="inherit" noWrap>
-            Contribute to the OperatorFlow project
+            Contribute to the OperatorFlow project on Github
           </Typography>
         </Toolbar>
       </AppBar>
@@ -145,7 +145,7 @@ export default function Album() {
                   <CardMedia
                     className={classes.cardMedia}
                     image={card.imageLink}
-                    title="Image title"
+                    title={card.title}
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">

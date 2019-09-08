@@ -24,7 +24,8 @@ class App extends Component {
   state = {
     isAuthenticated: false,
     isAuthenticating: true,
-    user: null
+    user: null,
+    idToken: null
   };
 
   setAuthStatus = authenticated => {
@@ -39,6 +40,10 @@ class App extends Component {
     this.setState({ user: user });
   };
 
+  setIdToken = idToken => {
+    this.setState({idToken: idToken});
+  }
+
   async componentDidMount() {
     try {
       const session = await Auth.currentSession();
@@ -46,6 +51,8 @@ class App extends Component {
       console.log(session);
       const user = await Auth.currentAuthenticatedUser();
       this.setUser(user);
+      const idToken = session.idToken.jwtToken; // grab the JWT token and store in memory
+      this.setIdToken(idToken);
     } catch (error) {
       console.log(error);
     }
@@ -57,8 +64,9 @@ class App extends Component {
     const authProps = {
       isAuthenticated: this.state.isAuthenticated,
       user: this.state.user,
+      idToken: this.state.idToken,
       setAuthStatus: this.setAuthStatus,
-      setUser: this.setUser
+      setUser: this.setUser,
     };
 
     return (
