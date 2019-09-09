@@ -11,6 +11,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const API_GATEWAY_ENDPOINT = "https://19mgxwhsm8.execute-api.us-east-1.amazonaws.com"
+
 let API_GATEWAY_POST_PAYLOAD_TEMPLATE = {
   operation: "read",
   tableName: "databricks-api",
@@ -28,8 +30,7 @@ const Dashboard = props => {
   useEffect(()=> {
     if (!state.clusters) { 
       console.log("Need to fetch cluster information.");
-      fetchDatabricksClusters(props.auth.idToken).then(data => console.log(data));
-
+      fetchDatabricksClusters(props.auth.idToken).then(data => setState(data.clusters));
     }
   })
 
@@ -39,7 +40,7 @@ const Dashboard = props => {
         Authorization: idToken
       };
       return await axios.get(
-        "https://19mgxwhsm8.execute-api.us-east-1.amazonaws.com/v1/cluster",
+        `${API_GATEWAY_ENDPOINT}/v1/cluster`,
         API_GATEWAY_POST_PAYLOAD_TEMPLATE,
         {
           headers: headers
