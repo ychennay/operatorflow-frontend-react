@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# API stubs
+src/stubs.js
+
 # testing
 /coverage
 
