@@ -35,7 +35,7 @@ export default class Navbar extends Component {
             <a href="/" className="navbar-item">
               Home
             </a>
-            <a href="/products" className="navbar-item">
+            <a href="/sparkflow" className="navbar-item">
               SparkFlow
             </a>
             <a href="/kubeflow" className="navbar-item">

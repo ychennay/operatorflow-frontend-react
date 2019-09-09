@@ -3,7 +3,7 @@ import Product from './Product';
 import axios from "axios";
 const config = require('../config.json');
 
-export default class Products extends Component {
+export default class SparkJobs extends Component {
 
   state = {
     newproduct: null,

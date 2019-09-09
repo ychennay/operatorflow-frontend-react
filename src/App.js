@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Products from "./components/Products";
+import SparkDashboard from "./components/sparkflow/Dashboard";
 import ProductAdmin from "./components/ProductAdmin";
 import LogIn from "./components/auth/LogIn";
 import Album from "./components/Album";
@@ -17,7 +17,8 @@ import Footer from "./components/Footer";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Auth } from "aws-amplify";
-
+import { ThemeProvider } from "@material-ui/styles";
+import theme from './theme';
 library.add(faEdit);
 
 class App extends Component {
@@ -71,6 +72,7 @@ class App extends Component {
 
     return (
       !this.state.isAuthenticating && (
+        <ThemeProvider theme={theme}>
         <div className="App">
           <Router>
             <div>
@@ -83,18 +85,13 @@ class App extends Component {
                 />
                 <Route
                   exact
-                  path="/products"
-                  render={props => <Products {...props} auth={authProps} />}
+                  path="/sparkflow"
+                  render={props => <SparkDashboard {...props} auth={authProps} />}
                 />
                 <Route
                   exact
                   path="/admin"
                   render={props => <ProductAdmin {...props} auth={authProps} />}
-                />
-                <Route
-                  exact
-                  path="/album"
-                  render={props => <Album {...props} auth={authProps} />}
                 />
                 <Route
                   exact
@@ -140,6 +137,11 @@ class App extends Component {
                   )}
                 />
                 <Route
+                exact
+                path="/sparkflow"
+                render={props => <SparkDashboard {...props} auth={authProps} />}
+              />
+                <Route
                   exact
                   path="/welcome"
                   render={props => <Welcome {...props} auth={authProps} />}
@@ -149,6 +151,7 @@ class App extends Component {
             </div>
           </Router>
         </div>
+        </ThemeProvider>
       )
     );
   }
