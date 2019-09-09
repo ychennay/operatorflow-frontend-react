@@ -17,16 +17,50 @@ import Footer from "./components/Footer";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Auth } from "aws-amplify";
+import axios from 'axios';
 import { ThemeProvider } from "@material-ui/styles";
 import theme from './theme';
 library.add(faEdit);
+
+
+const fetchDatabricksKey = async idToken => {
+  try {
+    const headers = {
+      Authorization: idToken
+    };
+
+    return await axios.post(
+      "https://19mgxwhsm8.execute-api.us-east-1.amazonaws.com/v1/token",
+      API_GATEWAY_POST_PAYLOAD_TEMPLATE,
+      {
+        headers: headers
+      }
+    );
+
+  } catch (e) {
+    console.log(`😱 Axios request failed! : ${e}`);
+    return e;
+  }
+};
+
+let API_GATEWAY_POST_PAYLOAD_TEMPLATE = {
+  operation: "read",
+  tableName: "databricks-api",
+  payload: {
+    Key: {
+      user_id: "yuchen_test@mailinator.com"
+    }
+  }
+};
+
 
 class App extends Component {
   state = {
     isAuthenticated: false,
     isAuthenticating: true,
     user: null,
-    idToken: null
+    idToken: null,
+    databricksToken: null
   };
 
   setAuthStatus = authenticated => {
@@ -45,6 +79,11 @@ class App extends Component {
     this.setState({ idToken: idToken });
   };
 
+  setDatabricksToken = token => {
+    console.log(`Setting token as ${token}`);
+    this.setState({ databricksToken: token });
+  };
+
   async componentDidMount() {
     try {
       const session = await Auth.currentSession();
@@ -54,6 +93,9 @@ class App extends Component {
       this.setUser(user);
       const idToken = session.idToken.jwtToken; // grab the JWT token and store in memory
       this.setIdToken(idToken);
+      const databricksToken = await fetchDatabricksKey(idToken);
+      console.log(databricksToken.data);
+      this.setDatabricksToken(databricksToken.data.Item.access_token);
     } catch (error) {
       console.log(error);
     }
@@ -66,8 +108,10 @@ class App extends Component {
       isAuthenticated: this.state.isAuthenticated,
       user: this.state.user,
       idToken: this.state.idToken,
+      databricksToken: this.state.databricksToken,
       setAuthStatus: this.setAuthStatus,
-      setUser: this.setUser
+      setUser: this.setUser,
+      setDatabricksToken: this.setDatabricksToken
     };
 
     return (
