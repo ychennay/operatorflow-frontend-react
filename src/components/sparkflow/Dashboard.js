@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import AddJob from "./subcomponents/AddJob";
@@ -21,38 +21,36 @@ let API_GATEWAY_POST_PAYLOAD_TEMPLATE = {
   }
 };
 
-
-// curl 'https://<databricks-instance>/api/2.0/token/list' -X GET -H "Authorization: Bearer <personal-access-token-value>"
-
-const DATABRICKS_DEPLOYMENT_API_BASE_URL = "https://dbc-e3636760-d7f1.cloud.databricks.com/api/2.0";
-
-const makeApiEndpoint = (resource, action) => `${DATABRICKS_DEPLOYMENT_API_BASE_URL}/${resource}/${action}`
-
-const getClusters = async accessToken => {
-    try {
-        const headers = {
-          "Authorization": `Bearer: ${accessToken}`
-        };
-    
-        return await axios(
-            makeApiEndpoint("clusters", "list"),
-          {
-            headers: headers
-          }
-        );
-    
-      } catch (e) {
-        console.log(`😱 Axios request failed! : ${e}`);
-        return e;
-      }
-}
-
 const Dashboard = props => {
   const classes = useStyles();
-  
 
-  console.log(props);
-  getClusters(props.da)
+  const [state, setState] = useState({"clusters": null}); // use React hooks to set Databricks clusters
+  useEffect(()=> {
+    if (!state.clusters) { 
+      console.log("Need to fetch cluster information.");
+      fetchDatabricksClusters(props.auth.idToken).then(data => console.log(data));
+
+    }
+  })
+
+  const fetchDatabricksClusters = async idToken => {
+    try {
+      const headers = {
+        Authorization: idToken
+      };
+      return await axios.get(
+        "https://19mgxwhsm8.execute-api.us-east-1.amazonaws.com/v1/cluster",
+        API_GATEWAY_POST_PAYLOAD_TEMPLATE,
+        {
+          headers: headers
+        }
+      );
+    } catch (e) {
+      console.log(`😱 Axios request failed! : ${e}`);
+      return e;
+    }
+  };
+  
 
   return (
     <div className={classes.root}>

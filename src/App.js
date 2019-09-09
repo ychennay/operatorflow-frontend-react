@@ -93,9 +93,6 @@ class App extends Component {
       this.setUser(user);
       const idToken = session.idToken.jwtToken; // grab the JWT token and store in memory
       this.setIdToken(idToken);
-      const databricksToken = await fetchDatabricksKey(idToken);
-      console.log(databricksToken.data);
-      this.setDatabricksToken(databricksToken.data.Item.access_token);
     } catch (error) {
       console.log(error);
     }
@@ -108,10 +105,8 @@ class App extends Component {
       isAuthenticated: this.state.isAuthenticated,
       user: this.state.user,
       idToken: this.state.idToken,
-      databricksToken: this.state.databricksToken,
       setAuthStatus: this.setAuthStatus,
       setUser: this.setUser,
-      setDatabricksToken: this.setDatabricksToken
     };
 
     return (
