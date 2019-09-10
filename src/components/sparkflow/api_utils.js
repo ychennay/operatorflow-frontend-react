@@ -7,9 +7,7 @@ const fetchDatabricksResource = async (idToken, resource) => {
       const headers = {
         Authorization: idToken
       };
-  
-      console.log(headers);
-  
+
       return await axios.get(
         `${API_GATEWAY_ENDPOINT}/v1/${resource}`,
         {

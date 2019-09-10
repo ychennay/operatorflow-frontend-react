@@ -8,3 +8,4 @@ export { default as TotalUsers } from './TotalUsers';
 export { default as UsersByDevice } from './UsersByDevice';
 export {default as NewJobForm } from './NewJobForm';
 export { default as Jobs } from './Jobs';
+export { default as Workspaces } from './Workspaces';

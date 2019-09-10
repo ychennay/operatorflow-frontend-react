@@ -24,6 +24,12 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 import { StatusBullet } from "../../..";
 
+const jobStatusColors = { // map the Databricks cluster status to
+    ACTIVE: "success",
+    EXPIRED: "danger",
+    RESTARTING: "info"
+  };
+
 const useStyles = makeStyles(theme => ({
   root: {},
   content: {
@@ -67,10 +73,10 @@ const Jobs = props => {
       <CardHeader
         action={
           <Button color="primary" size="small" variant="outlined">
-            Create New Cluster
+            Register New Job
           </Button>
         }
-        title="Spark Clusters"
+        title="Registered Spark Jobs"
       />
       <Divider />
       <CardContent className={classes.content}>
@@ -79,25 +85,18 @@ const Jobs = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Cluster Name</TableCell>
-                  <TableCell>Storage Volume Size (MB)</TableCell>
+                  <TableCell>Job Name</TableCell>
+                  <TableCell>Schedule Trigger</TableCell>
+                  <TableCell>Notebook (Version)</TableCell>
                   <TableCell>Region</TableCell>
                   <TableCell>Owner</TableCell>
-                  <TableCell>Worker Instance</TableCell>
-                  <TableCell>Master Instance</TableCell>
+                  <TableCell>Scheduled Timezone</TableCell>
+                  <TableCell>Workers Used</TableCell>
                   <TableCell>Autoscaling</TableCell>
-                  <TableCell>Spark Deployment Version</TableCell>
                   <TableCell sortDirection="desc">
                     <Tooltip enterDelay={300} title="Sort">
                       <TableSortLabel active direction="desc">
-                        Start Time
-                      </TableSortLabel>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell sortDirection="desc">
-                    <Tooltip enterDelay={300} title="Sort">
-                      <TableSortLabel active direction="desc">
-                        Terminated Time
+                        Created Date
                       </TableSortLabel>
                     </Tooltip>
                   </TableCell>
@@ -106,21 +105,28 @@ const Jobs = props => {
               </TableHead>
               <TableBody>
                 {state.jobs && state.jobs.map(job => (
-                  <TableRow hover key={job.cluster_id}>
-                  <TableCell><em>{job.cluster_name}</em></TableCell>
-                    <TableCell>{job.aws_attributes.ebs_volume_size}</TableCell>
-                    <TableCell>{job.aws_attributes.zone_id}</TableCell>
+                  <TableRow hover key={job.job_id}>
+                  <TableCell><em><b>{job.settings.name}</b></em></TableCell>
+                    <TableCell>{job.settings.schedule.quartz_cron_expression}</TableCell>
+                    <TableCell>{`${job.settings.notebook_task.notebook_path} (v${job.settings.notebook_task.revision_timestamp})`}</TableCell>
+                    <TableCell>{job.settings.new_cluster.aws_attributes.zone_id}</TableCell>
                     <TableCell>{job.creator_user_name}</TableCell>
-                    <TableCell>{job.node_type_id}</TableCell>
-                    <TableCell>{job.driver_node_type_id}</TableCell>
+                    <TableCell>{job.settings.schedule.timezone_id}</TableCell>
+                    <TableCell>{job.settings.new_cluster.num_workers}</TableCell>
                     <TableCell>{job.autoscale ? `${job.autoscale.min_workers} ⇒ ${job.autoscale.max_workers} nodes`: "Not Configured"}</TableCell>
-                    <TableCell>{job.spark_version}</TableCell>
                     <TableCell>
-                    {moment(job.start_time).format("MM/DD/YYYY")}
+                    {moment(job.created_time).format("MM/DD/YYYY")}
                   </TableCell>
-                    <TableCell>
-                      {moment(job.terminated_time).format("MM/DD/YYYY")}
-                    </TableCell>
+                  <TableCell>
+                  <div className={classes.statusContainer}>
+                    <StatusBullet
+                      className={classes.status}
+                      color={jobStatusColors["ACTIVE"]}
+                      size="md"
+                    />
+                    ACTIVE
+                  </div>
+                </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
