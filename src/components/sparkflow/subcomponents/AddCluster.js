@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Dialog from "@material-ui/core/Dialog";
-import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Submit from "../Submit";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -30,25 +29,6 @@ const zones = [
   {
     value: "us-east-1c",
     label: "us-east-1c"
-  }
-];
-
-const workers = [
-  {
-    value: 1,
-    label: "1 (min)"
-  },
-  {
-    value: 2,
-    label: "2"
-  },
-  {
-    value: 3,
-    label: "3"
-  },
-  {
-    value: 4,
-    label: "4 (max)"
   }
 ];
 

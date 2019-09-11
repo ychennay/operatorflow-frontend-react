@@ -7,7 +7,7 @@ export default function  Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Engineered for Syracuse University's College of Engineering and Computer Science. Original repository was forked from jspruance's aws-cognito tutorial.
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

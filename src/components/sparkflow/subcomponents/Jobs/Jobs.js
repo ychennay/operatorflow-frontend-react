@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import {fetchDatabricksResource} from "../../api_utils";
 import AddJob from '../AddJob';
+import {createDatabricksResource} from '../../api_utils'
+import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
+import Fab from '@material-ui/core/Fab';
 import {
   Card,
   CardActions,
@@ -68,6 +71,11 @@ const Jobs = props => {
     }
   })
 
+  const handleRun = (job) => {
+    console.log(`Request to run ${job.job_id}`);
+    createDatabricksResource(props.auth.idToken, "run", {job_id: job.job_id}).then((result)=> console.log(result));
+  }
+
   return (
   
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -101,6 +109,7 @@ const Jobs = props => {
                     </Tooltip>
                   </TableCell>
                   <TableCell>Status</TableCell>
+                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -108,7 +117,7 @@ const Jobs = props => {
                   <TableRow hover key={job.job_id}>
                   <TableCell><em><b>{job.settings.name}</b></em></TableCell>
                     <TableCell>{job.settings.schedule.quartz_cron_expression}</TableCell>
-                    <TableCell>{`${job.settings.notebook_task.notebook_path} (v${job.settings.notebook_task.revision_timestamp})`}</TableCell>
+                    <TableCell>{`${job.settings.notebook_task.notebook_path.split("/").reverse()[0]} (v${job.settings.notebook_task.revision_timestamp})`}</TableCell>
                     <TableCell>{job.settings.new_cluster.aws_attributes.zone_id}</TableCell>
                     <TableCell>{job.creator_user_name}</TableCell>
                     <TableCell>{job.settings.schedule.timezone_id}</TableCell>
@@ -126,6 +135,12 @@ const Jobs = props => {
                     />
                     ACTIVE
                   </div>
+                </TableCell>
+                <TableCell>
+                <Fab variant="extended" size="medium" color="primary" aria-label="add" className={classes.margin} onClick={() => handleRun(job)}>
+                <PlayCircleFilled className={classes.extendedIcon}/>
+                Run
+              </Fab>
                 </TableCell>
                   </TableRow>
                 ))}

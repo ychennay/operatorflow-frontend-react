@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import SaveIcon from '@material-ui/icons/Save';
-import Typography from '@material-ui/core/typography';
 import {createDatabricksResource} from './api_utils';
 
 const useStyles = makeStyles(theme => ({

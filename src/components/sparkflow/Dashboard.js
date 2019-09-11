@@ -1,7 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
-import { TasksProgress, TotalProfit, Clusters, Jobs, Workspaces} from "./subcomponents";
+import { TasksProgress, Clusters, Jobs, Workspaces} from "./subcomponents";
+import Runs from "./subcomponents/Runs";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +20,7 @@ const Dashboard = props => {
           <TasksProgress />
         </Grid>
         <Grid item lg={4} md={6} xl={3} xs={12}>
-          <TotalProfit />
+        <Runs auth={props.auth}/>
         </Grid>
         <Grid item lg={4} md={6} xl={3} xs={12}>
           <Workspaces auth={props.auth}/>
