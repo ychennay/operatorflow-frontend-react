@@ -4,11 +4,14 @@ import moment from "moment";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
-import {fetchDatabricksResource} from "../../api_utils";
-import AddJob from '../AddJob';
-import {createDatabricksResource} from '../../api_utils'
-import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
-import Fab from '@material-ui/core/Fab';
+import { fetchDatabricksResource } from "../../api_utils";
+import AddJob from "../AddJob";
+import { createDatabricksResource } from "../../api_utils";
+import PlayCircleFilled from "@material-ui/icons/PlayCircleFilled";
+import Fab from "@material-ui/core/Fab";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import {
   Card,
   CardActions,
@@ -28,11 +31,12 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 import { StatusBullet } from "../../..";
 
-const jobStatusColors = { // map the Databricks cluster status to
-    ACTIVE: "success",
-    EXPIRED: "danger",
-    RESTARTING: "info"
-  };
+const jobStatusColors = {
+  // map the Databricks cluster status to
+  ACTIVE: "success",
+  EXPIRED: "danger",
+  RESTARTING: "info"
+};
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -59,31 +63,31 @@ const Jobs = props => {
 
   const classes = useStyles();
 
-  const [state, setState] = useState({jobs: null}); // use React hooks to set Databricks clusters
-  useEffect(()=> {
-    if (!state.jobs) { 
+  const [state, setState] = useState({ jobs: null }); // use React hooks to set Databricks clusters
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  useEffect(() => {
+    if (!state.jobs) {
       console.log("Need to fetch cluster information.");
-      fetchDatabricksResource(props.auth.idToken, 'job').then(response => {
-        if (response){
-          setState({jobs: response.data.jobs});
+      fetchDatabricksResource(props.auth.idToken, "job").then(response => {
+        if (response) {
+          setState({ jobs: response.data.jobs });
         }
       });
     }
-  })
+  });
 
-  const handleRun = (job) => {
+  const handleRun = job => {
     console.log(`Request to run ${job.job_id}`);
-    createDatabricksResource(props.auth.idToken, "run", {job_id: job.job_id}).then((result)=> console.log(result));
-  }
+    createDatabricksResource(props.auth.idToken, "run", {
+      job_id: job.job_id
+    }).then(result => console.log(result));
+  };
 
   return (
-  
     <Card {...rest} className={clsx(classes.root, className)}>
-    
       <CardHeader
-        action={
-          <AddJob text={"Register New Job"}/>
-        }
+        action={<AddJob text={"Register New Job"} />}
         title="Registered Spark Jobs"
       />
       <Divider />
@@ -113,37 +117,69 @@ const Jobs = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {state.jobs && state.jobs.map(job => (
-                  <TableRow hover key={job.job_id}>
-                  <TableCell><em><b>{job.settings.name}</b></em></TableCell>
-                    <TableCell>{job.settings.schedule.quartz_cron_expression}</TableCell>
-                    <TableCell>{`${job.settings.notebook_task.notebook_path.split("/").reverse()[0]} (v${job.settings.notebook_task.revision_timestamp})`}</TableCell>
-                    <TableCell>{job.settings.new_cluster.aws_attributes.zone_id}</TableCell>
-                    <TableCell>{job.creator_user_name}</TableCell>
-                    <TableCell>{job.settings.schedule.timezone_id}</TableCell>
-                    <TableCell>{job.settings.new_cluster.num_workers}</TableCell>
-                    <TableCell>{job.autoscale ? `${job.autoscale.min_workers} ⇒ ${job.autoscale.max_workers} nodes`: "Not Configured"}</TableCell>
-                    <TableCell>
-                    {moment(job.created_time).format("MM/DD/YYYY")}
-                  </TableCell>
-                  <TableCell>
-                  <div className={classes.statusContainer}>
-                    <StatusBullet
-                      className={classes.status}
-                      color={jobStatusColors["ACTIVE"]}
-                      size="md"
-                    />
-                    ACTIVE
-                  </div>
-                </TableCell>
-                <TableCell>
-                <Fab variant="extended" size="medium" color="primary" aria-label="add" className={classes.margin} onClick={() => handleRun(job)}>
-                <PlayCircleFilled className={classes.extendedIcon}/>
-                Run
-              </Fab>
-                </TableCell>
-                  </TableRow>
-                ))}
+                {state.jobs &&
+                  state.jobs.map(job => (
+                    <TableRow hover key={job.job_id}>
+                      <TableCell>
+                        <em>
+                          <b>{job.settings.name}</b>
+                        </em>
+                      </TableCell>
+                      <TableCell>
+                        {job.settings.schedule.quartz_cron_expression}
+                      </TableCell>
+                      <TableCell>{`${
+                        job.settings.notebook_task.notebook_path
+                          .split("/")
+                          .reverse()[0]
+                      } (v${
+                        job.settings.notebook_task.revision_timestamp
+                      })`}</TableCell>
+                      <TableCell>
+                        {job.settings.new_cluster.aws_attributes.zone_id}
+                      </TableCell>
+                      <TableCell>{job.creator_user_name}</TableCell>
+                      <TableCell>{job.settings.schedule.timezone_id}</TableCell>
+                      <TableCell>
+                        {job.settings.new_cluster.num_workers}
+                      </TableCell>
+                      <TableCell>
+                        {job.autoscale
+                          ? `${job.autoscale.min_workers} ⇒ ${job.autoscale.max_workers} nodes`
+                          : "Not Configured"}
+                      </TableCell>
+                      <TableCell>
+                        {moment(job.created_time).format("MM/DD/YYYY")}
+                      </TableCell>
+                      <TableCell>
+                        <div className={classes.statusContainer}>
+                          <StatusBullet
+                            className={classes.status}
+                            color={jobStatusColors["ACTIVE"]}
+                            size="md"
+                          />
+                          ACTIVE
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Tooltip title="Execute job immediately. This will provision a temporary cluster for your Job.">
+                          <Fab
+                            variant="extended"
+                            size="medium"
+                            color="primary"
+                            aria-label="add"
+                            className={classes.margin}
+                            onClick={() => handleRun(job)}
+                          >
+                            <PlayCircleFilled
+                              className={classes.extendedIcon}
+                            />
+                            Run
+                          </Fab>
+                        </Tooltip>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>
@@ -151,8 +187,39 @@ const Jobs = props => {
       </CardContent>
       <Divider />
       <CardActions className={classes.actions}>
-        <Button color="primary" size="small" variant="text">View all <ArrowRightIcon />
+        <Button color="primary" size="small" variant="text">
+          View all <ArrowRightIcon />
         </Button>
+        {
+          loading ? (
+            <CircularProgress className={classes.progress} />
+          ) : (
+            <Button
+              size="small"
+              variant="text"
+              onClick={() => {
+                console.log("Refreshing cache.")
+                setLoading(true);
+                fetchDatabricksResource(
+                  props.auth.idToken,
+                  "job",
+                  true
+                ).then(response => {
+                  if (response.data) {
+                      console.log("New cluster data:", response.data.clusters)
+                      setState({clusters: response.data.clusters});
+                    setLoading(false);
+                    setSuccess(true);
+                  }
+                });
+              }}
+            >
+              <Tooltip title="Update data for latest changes">
+                <RefreshIcon size="large" />
+              </Tooltip>
+            </Button>
+          )
+        }
       </CardActions>
     </Card>
   );

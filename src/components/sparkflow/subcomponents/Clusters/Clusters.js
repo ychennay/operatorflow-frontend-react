@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import AddCluster from '../AddCluster';
 import { makeStyles } from "@material-ui/styles";
 import {fetchDatabricksResource} from "../../api_utils";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import {
   Card,
   CardActions,
@@ -57,12 +60,16 @@ const Clusters = props => {
   const classes = useStyles();
 
   const [state, setState] = useState({clusters: null}); // use React hooks to set Databricks clusters
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  
   useEffect(()=> {
     if (!state.clusters) { 
       console.log("Need to fetch cluster information.");
       fetchDatabricksResource(props.auth.idToken, 'cluster').then(response => {
-        if (response){
+        if (response.data){
           setState({clusters: response.data.clusters});
+          setSuccess(true);
         }
       });
     }
@@ -72,7 +79,7 @@ const Clusters = props => {
  
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
-        action={<AddCluster auth={props.auth} text="Launch New Cluster"/>}
+        action={<Tooltip title="Quickly provision compute both for your adhoc Spark notebook executions and scheduled Jobs."><AddCluster auth={props.auth} text="Launch New Cluster"/></Tooltip>}
         title="Spark Clusters"
       />
       <Divider />
@@ -145,6 +152,36 @@ const Clusters = props => {
       <CardActions className={classes.actions}>
         <Button color="primary" size="small" variant="text">View all <ArrowRightIcon />
         </Button>
+          {
+            loading ? (
+              <CircularProgress className={classes.progress} />
+            ) : (
+              <Button
+                size="small"
+                variant="text"
+                onClick={() => {
+                  console.log("Refreshing cache.")
+                  setLoading(true);
+                  fetchDatabricksResource(
+                    props.auth.idToken,
+                    "cluster",
+                    true
+                  ).then(response => {
+                    if (response.data) {
+                        console.log("New cluster data:", response.data.clusters)
+                        setState({clusters: response.data.clusters});
+                      setLoading(false);
+                      setSuccess(true);
+                    }
+                  });
+                }}
+              >
+                <Tooltip title="Update data for latest changes">
+                  <RefreshIcon size="large" />
+                </Tooltip>
+              </Button>
+            )
+          }
       </CardActions>
     </Card>
   );
