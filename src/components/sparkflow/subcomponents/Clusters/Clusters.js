@@ -3,6 +3,7 @@ import clsx from "clsx";
 import moment from "moment";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
+import AddCluster from '../AddCluster';
 import { makeStyles } from "@material-ui/styles";
 import {fetchDatabricksResource} from "../../api_utils";
 import {
@@ -71,11 +72,7 @@ const Clusters = props => {
  
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
-        action={
-          <Button color="primary" size="small" variant="outlined">
-            Create New Cluster
-          </Button>
-        }
+        action={<AddCluster text="Launch New Cluster"/>}
         title="Spark Clusters"
       />
       <Divider />

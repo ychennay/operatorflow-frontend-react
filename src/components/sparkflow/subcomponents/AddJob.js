@@ -1,36 +1,53 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-const useStyles = makeStyles(theme => ({
-  fab: {
-    margin: theme.spacing(1)
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1)
+export default function FormDialog(props) {
+  const [open, setOpen] = React.useState(false);
+
+  function handleClickOpen() {
+    setOpen(true);
   }
-}));
 
-export default function FloatingActionButtons() {
-  const classes = useStyles();
-
+  function handleClose() {
+    setOpen(false);
+  }
+  console.log(`From FormDialog, ${props.text}`);
   return (
+
     <div>
-      <Fab variant="extended" color="primary" aria-label="add" className={classes.extendedIcon}>
-        Create
-        <AddIcon />
-      </Fab>
-      <Fab variant="extended" color="secondary" aria-label="edit" className={classes.extendedIcon}>
-        Edit
-        <EditIcon />
-      </Fab>
-      <Fab variant="extended" aria-label="delete" className={classes.extendedIcon}>
-      Delete
-        <DeleteIcon />
-      </Fab>
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      {props.text}
+      </Button>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            use this
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Subscribe
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

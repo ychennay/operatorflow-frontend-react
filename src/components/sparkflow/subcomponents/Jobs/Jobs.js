@@ -5,6 +5,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import {fetchDatabricksResource} from "../../api_utils";
+import AddJob from '../AddJob';
 import {
   Card,
   CardActions,
@@ -68,13 +69,12 @@ const Jobs = props => {
   })
 
   return (
- 
+  
     <Card {...rest} className={clsx(classes.root, className)}>
+    
       <CardHeader
         action={
-          <Button color="primary" size="small" variant="outlined">
-            Register New Job
-          </Button>
+          <AddJob text={"Register New Job"}/>
         }
         title="Registered Spark Jobs"
       />

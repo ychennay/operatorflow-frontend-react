@@ -20,8 +20,6 @@ import {
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import mockData from './data';
-
 const useStyles = makeStyles(() => ({
   root: {
     height: '100%'
@@ -48,7 +46,7 @@ const Workspaces = props => {
     if (!state.workspaces) { 
       console.log("Need to fetch workspace information.");
       fetchDatabricksResource(props.auth.idToken, 'workspace').then(response => {
-        if (response){
+        if (response.data){
           setState({workspaces: response.data.objects});
         }
       });

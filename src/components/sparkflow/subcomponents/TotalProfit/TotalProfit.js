@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TotalProfit = props => {
+const TotalCredits = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -46,19 +46,9 @@ const TotalProfit = props => {
           justify="space-between"
         >
           <Grid item>
-            <Typography
-              className={classes.title}
-              color="inherit"
-              gutterBottom
-              variant="body2"
-            >
-              TOTAL PROFIT
-            </Typography>
-            <Typography
-              color="inherit"
-              variant="h3"
-            >
-              $23,200
+            <Typography className={classes.title} color="inherit" gutterBottom variant="body2">Total Credits Used</Typography>
+            <Typography color="inherit" variant="h3">
+              44.62
             </Typography>
           </Grid>
           <Grid item>
@@ -72,8 +62,8 @@ const TotalProfit = props => {
   );
 };
 
-TotalProfit.propTypes = {
+TotalCredits.propTypes = {
   className: PropTypes.string
 };
 
-export default TotalProfit;
+export default TotalCredits;

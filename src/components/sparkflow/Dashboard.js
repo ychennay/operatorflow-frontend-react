@@ -20,12 +20,8 @@ const Dashboard = props => {
           <TasksProgress />
         </Grid>
         <Grid item lg={4} md={6} xl={3} xs={12}>
-          <AddJob />
-        </Grid>
-        <Grid item lg={4} md={6} xl={3} xs={12}>
           <TotalProfit />
         </Grid>
-
         <Grid item lg={4} md={6} xl={3} xs={12}>
           <Workspaces auth={props.auth}/>
         </Grid>
