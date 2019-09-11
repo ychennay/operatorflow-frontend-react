@@ -72,7 +72,7 @@ const Clusters = props => {
  
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
-        action={<AddCluster text="Launch New Cluster"/>}
+        action={<AddCluster auth={props.auth} text="Launch New Cluster"/>}
         title="Spark Clusters"
       />
       <Divider />

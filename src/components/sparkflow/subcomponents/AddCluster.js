@@ -6,6 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
+import Submit from "../Submit";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -76,8 +77,6 @@ export default function FormDialog(props) {
     name: `cluster-${Math.random()
       .toString(36)
       .substring(2, 10)}`,
-    age: "",
-    multiline: "Controlled",
     zone: "us-east-1a",
     autoscaling: true,
     minMaxWorkers: [2, 10],
@@ -99,8 +98,11 @@ export default function FormDialog(props) {
   const handleChange = name => event => {
     console.log(`Changing ${name} to ${event.target.value}`);
 
-
-    setValues({ ...values, [name]: name === 'workers' ? parseInt(event.target.value) : event.target.value });
+    setValues({
+      ...values,
+      [name]:
+        name === "workers" ? parseInt(event.target.value) : event.target.value
+    });
   };
 
   const handleSwitchChange = name => event => {
@@ -121,7 +123,24 @@ export default function FormDialog(props) {
   };
 
   const handleSliderChange = (event, newValue) => {
-    setValues({ ...values, workers: parseInt(newValue)});
+    setValues({ ...values, workers: parseInt(newValue) });
+  };
+
+  const prepareCreatePayload = values => {
+    let payload = {
+      cluster_name: values.name,
+      spark_version: "5.3.x-scala2.11",
+      node_type_id: "i3.xlarge"
+    };
+    if (values.autoscaling) {
+      payload.autoscale = {
+        min_workers: values.minMaxWorkers[0],
+        max_workers: values.minMaxWorkers[1]
+      };
+    } else {
+      payload.num_workers = values.workers;
+    }
+    return payload;
   };
 
   return (
@@ -186,64 +205,62 @@ export default function FormDialog(props) {
               required
             />
           </FormGroup>
-          <Typography id="discrete-slider" gutterBottom>
           <Grid item>
-          <AddToQueue />
+            <AddToQueue />
           </Grid>
-          <Grid item>
-          Workers to Provision (+1 Master Node)
-          </Grid>
-          </Typography>
-       
-          {values.autoscaling ? <Slider
-            marks={true}
-            step={1}
-            min={1}
-            max={16}
-            value={values.minMaxWorkers}
-            onChange={handleMinMaxWorkersChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            getAriaValueText={valuetext}
-          /> :             <Grid container spacing={2} alignItems="center">
-          <Grid item xs>
+          <Grid item>Workers to Provision (+1 Master Node)</Grid>
+
+          {values.autoscaling ? (
             <Slider
+              marks={true}
               step={1}
               min={1}
               max={16}
-              marks={true}
-              value={
-                typeof values.workers === "number" ? values.workers : 0
-              }
-              onChange={handleSliderChange}
-              aria-labelledby="input-slider"
+              value={values.minMaxWorkers}
+              onChange={handleMinMaxWorkersChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="range-slider"
+              getAriaValueText={valuetext}
             />
-          </Grid>
-          <Grid item>
-            <Input
-              className={classes.input}
-              value={values.workers}
-              margin="dense"
-              onChange={handleChange("workers")}
-              onBlur={handleBlur}
-              inputProps={{
-                step: 1,
-                min: 1,
-                max: 10,
-                type: "number",
-                "aria-labelledby": "input-slider"
-              }}
-            />
-          </Grid>
-        </Grid>}
+          ) : (
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs>
+                <Slider
+                  step={1}
+                  min={1}
+                  max={16}
+                  marks={true}
+                  value={
+                    typeof values.workers === "number" ? values.workers : 0
+                  }
+                  onChange={handleSliderChange}
+                  aria-labelledby="input-slider"
+                />
+              </Grid>
+              <Grid item>
+                <Input
+                  className={classes.input}
+                  value={values.workers}
+                  margin="dense"
+                  onChange={handleChange("workers")}
+                  onBlur={handleBlur}
+                  inputProps={{
+                    step: 1,
+                    min: 1,
+                    max: 10,
+                    type: "number",
+                    "aria-labelledby": "input-slider"
+                  }}
+                />
+              </Grid>
+            </Grid>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            Cancel & Exit
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Launch
-          </Button>
+          <Submit auth={props.auth} text={"Launch"} payload={prepareCreatePayload(values)} resource={"cluster"} />
         </DialogActions>
       </Dialog>
     </div>

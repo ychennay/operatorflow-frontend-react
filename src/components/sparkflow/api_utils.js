@@ -20,4 +20,22 @@ const fetchDatabricksResource = async (idToken, resource) => {
     }
   };
 
-  export { fetchDatabricksResource}
+
+  const createDatabricksResource = async (idToken, resource, data) => {
+    try {
+      const headers = {
+        Authorization: idToken
+      };
+
+      return await axios.post(
+        `${API_GATEWAY_ENDPOINT}/v1/${resource}`, data,
+        {
+          headers: headers
+        });
+    } catch (e) {
+      console.log(`😱 Axios request failed! : ${e}`);
+      return e;
+    }
+  }
+
+  export { fetchDatabricksResource, createDatabricksResource}

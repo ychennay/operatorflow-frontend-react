@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import CheckIcon from '@material-ui/icons/Check';
 import SaveIcon from '@material-ui/icons/Save';
+import Typography from '@material-ui/core/typography';
+import {createDatabricksResource} from './api_utils';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CircularIntegration() {
+export default function CircularIntegration(props) {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
@@ -60,10 +62,12 @@ export default function CircularIntegration() {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      timer.current = setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 2000);
+      console.log(props.payload, "SENDING NOW")
+      createDatabricksResource(props.auth.idToken, "cluster", props.payload).then((event)=> {
+          console.log("EVENT", event);
+          setSuccess(true);
+          setLoading(false);
+      });
     }
   }
 
@@ -73,6 +77,7 @@ export default function CircularIntegration() {
         <Fab
           aria-label="save"
           color="primary"
+          disabled={success && !loading}
           className={buttonClassname}
           onClick={handleButtonClick}
         >
@@ -84,11 +89,11 @@ export default function CircularIntegration() {
         <Button
           variant="contained"
           color="primary"
+          disabled={success && !loading}
           className={buttonClassname}
-          disabled={loading}
           onClick={handleButtonClick}
         >
-          Accept terms
+          {success && !loading ? "Cluster Successfully Created" : props.text}
         </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
       </div>
