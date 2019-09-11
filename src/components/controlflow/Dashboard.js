@@ -18,6 +18,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
+import Buckets from './Buckets';
 import TileMetric from './TileMetric';
 import Workflows from './Workflows';
 
@@ -102,7 +103,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -176,6 +177,11 @@ export default function Dashboard() {
                 <Workflows />
               </Paper>
             </Grid>
+            <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Buckets auth={props.auth}/>
+            </Paper>
+          </Grid>
           </Grid>
         </Container>
       </main>

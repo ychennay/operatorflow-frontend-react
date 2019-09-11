@@ -79,7 +79,7 @@ const Clusters = props => {
  
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
-        action={<Tooltip title="Quickly provision compute both for your adhoc Spark notebook executions and scheduled Jobs."><AddCluster auth={props.auth} text="Launch New Cluster"/></Tooltip>}
+        action={<AddCluster auth={props.auth} text="Launch New Cluster"/>}
         title="Spark Clusters"
       />
       <Divider />
