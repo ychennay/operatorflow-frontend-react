@@ -13,6 +13,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@material-ui/core/Grid";
+import Input from "@material-ui/core/Input";
+import AddToQueue from "@material-ui/icons/AddToQueue";
 
 const zones = [
   {
@@ -76,7 +79,9 @@ export default function FormDialog(props) {
     age: "",
     multiline: "Controlled",
     zone: "us-east-1a",
-    autoscaling: true
+    autoscaling: true,
+    minMaxWorkers: [2, 10],
+    workers: 2
   });
 
   function handleClickOpen() {
@@ -93,12 +98,30 @@ export default function FormDialog(props) {
 
   const handleChange = name => event => {
     console.log(`Changing ${name} to ${event.target.value}`);
-    setValues({ ...values, [name]: event.target.value });
+
+
+    setValues({ ...values, [name]: name === 'workers' ? parseInt(event.target.value) : event.target.value });
   };
 
   const handleSwitchChange = name => event => {
     console.log(`Changing ${name} to ${event.target.checked}`);
     setValues({ ...values, [name]: event.target.checked });
+  };
+
+  const handleMinMaxWorkersChange = (event, newValue) => {
+    setValues({ ...values, minMaxWorkers: newValue });
+  };
+
+  const handleBlur = () => {
+    if (values.workers < 0) {
+      setValues({ ...values, workers: 0 });
+    } else if (values.workers > 10) {
+      setValues({ ...values, workers: 10 });
+    }
+  };
+
+  const handleSliderChange = (event, newValue) => {
+    setValues({ ...values, workers: parseInt(newValue)});
   };
 
   return (
@@ -131,8 +154,30 @@ export default function FormDialog(props) {
               label="Enabled Autoscaling"
             />
             <TextField
+              id="outlined-select-zone"
+              select
+              label="Select"
+              className={classes.textField}
+              value={values.zone}
+              onChange={handleChange("zone")}
+              SelectProps={{
+                MenuProps: {
+                  className: classes.menu
+                }
+              }}
+              helperText="Availability Zone"
+              margin="normal"
+              variant="outlined"
+            >
+              {zones.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
               autoFocus
-              margin="dense"
+              margin="normal"
               id="outlined-name"
               label="Cluster Name"
               type="email"
@@ -141,42 +186,56 @@ export default function FormDialog(props) {
               required
             />
           </FormGroup>
-          <TextField
-            id="outlined-select-zone"
-            select
-            label="Select"
-            className={classes.textField}
-            value={values.zone}
-            onChange={handleChange("zone")}
-            SelectProps={{
-              MenuProps: {
-                className: classes.menu
-              }
-            }}
-            helperText="Availability Zone"
-            margin="normal"
-            variant="outlined"
-          >
-            {zones.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-
           <Typography id="discrete-slider" gutterBottom>
-            Worker Nodes
+          <Grid item>
+          <AddToQueue />
+          </Grid>
+          <Grid item>
+          Workers to Provision (+1 Master Node)
+          </Grid>
           </Typography>
-          <Slider
-            defaultValue={2}
-            getAriaValueText={valuetext}
-            aria-labelledby="discrete-slider-always"
-            valueLabelDisplay="on"
+       
+          {values.autoscaling ? <Slider
+            marks={true}
             step={1}
-            marks
-            min={2}
-            max={8}
-          />
+            min={1}
+            max={16}
+            value={values.minMaxWorkers}
+            onChange={handleMinMaxWorkersChange}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            getAriaValueText={valuetext}
+          /> :             <Grid container spacing={2} alignItems="center">
+          <Grid item xs>
+            <Slider
+              step={1}
+              min={1}
+              max={16}
+              marks={true}
+              value={
+                typeof values.workers === "number" ? values.workers : 0
+              }
+              onChange={handleSliderChange}
+              aria-labelledby="input-slider"
+            />
+          </Grid>
+          <Grid item>
+            <Input
+              className={classes.input}
+              value={values.workers}
+              margin="dense"
+              onChange={handleChange("workers")}
+              onBlur={handleBlur}
+              inputProps={{
+                step: 1,
+                min: 1,
+                max: 10,
+                type: "number",
+                "aria-labelledby": "input-slider"
+              }}
+            />
+          </Grid>
+        </Grid>}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
