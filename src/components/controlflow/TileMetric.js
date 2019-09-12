@@ -24,7 +24,7 @@ export default function Deposits() {
         as of September 12th, 2019
       </Typography>
       <div>
-        <Link color="primary" href="javascript:;">
+        <Link color="primary">
           View history
         </Link>
       </div>

@@ -7,7 +7,7 @@ import AddCluster from '../AddCluster';
 import { makeStyles } from "@material-ui/styles";
 import {fetchDatabricksResource} from "../../api_utils";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import Grid from '@material-ui/core/Grid';
 import {
   Card,
@@ -156,7 +156,7 @@ const Clusters = props => {
         </Button>
           {
             loading ? (
-              <CircularProgress className={classes.progress} />
+              <LinearProgress className={classes.progress} />
             ) : (
               <Button
                 size="small"
@@ -186,7 +186,7 @@ const Clusters = props => {
           }
       </CardActions></div>:<Grid container spacing={3}>
       <Grid item xs={12}>
-      <CircularProgress/>
+      <LinearProgress/>
       </Grid>
     </Grid>}
     </Card>

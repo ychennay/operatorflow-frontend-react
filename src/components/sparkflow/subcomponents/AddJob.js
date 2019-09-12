@@ -16,7 +16,6 @@ import Input from "@material-ui/core/Input";
 import AddToQueue from "@material-ui/icons/AddToQueue";
 import { fetchDatabricksResource } from "../api_utils";
 import CircularIndeterminate from "../../Loading";
-import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -63,7 +62,8 @@ export default function FormDialog(props) {
       .substring(2, 10)}`,
     notebook: "Select a Spark notebook to run",
     emailNotification: "",
-    workers: 2
+    workers: 2,
+    schedule: "0 15 10 15 * ?"
   });
 
   function handleClickOpen() {
@@ -103,18 +103,34 @@ export default function FormDialog(props) {
 
   const prepareCreatePayload = values => {
     let payload = {
-      cluster_name: values.name,
-      spark_version: "5.3.x-scala2.11",
-      node_type_id: "i3.xlarge"
+      "name": values.name,
+      "new_cluster": {
+        "spark_version": "5.3.x-scala2.11",
+        "node_type_id": "r3.xlarge",
+        "aws_attributes": {
+          "availability": "ON_DEMAND"
+        },
+        "num_workers": values.workers
+      },
+      "email_notifications": {
+        "on_start":
+          values.emailNotification === "" ? [] : [values.emailNotification],
+        "on_success":
+          values.emailNotification === "" ? [] : [values.emailNotification],
+        "on_failure":
+          values.emailNotification === "" ? [] : [values.emailNotification]
+      },
+      "schedule": {
+        "quartz_cron_expression": values.schedule,
+        "timezone_id": "America/Los_Angeles"
+      },
+
+      "notebook_task": {
+        "notebook_path": values.notebook
+      }
     };
-    if (values.autoscaling) {
-      payload.autoscale = {
-        min_workers: values.minMaxWorkers[0],
-        max_workers: values.minMaxWorkers[1]
-      };
-    } else {
-      payload.num_workers = values.workers;
-    }
+
+    console.log(payload)
     return payload;
   };
 
@@ -162,7 +178,6 @@ export default function FormDialog(props) {
                 </TextField>
               </Grid>
               <Grid item xs={6}>
-          
                 <TextField
                   autoFocus
                   margin="normal"
@@ -174,15 +189,15 @@ export default function FormDialog(props) {
                   required
                   variant="outlined"
                 />
-       
               </Grid>
-      
+
               <Grid item xs={12}>
-              <DialogContentText>
-              Select a recipient you'd like to send an email to when the job run begins.
-            </DialogContentText>
+                <DialogContentText>
+                  Select a recipient you'd like to send an email to when the job
+                  run begins, and a schedule with which to run your job.
+                </DialogContentText>
                 <TextField
-                id="outlined-name"
+                  id="outlined-name"
                   label="Email Address"
                   className={classes.textField}
                   type="email"
@@ -192,7 +207,15 @@ export default function FormDialog(props) {
                   margin="normal"
                   variant="outlined"
                 />
-   
+                <TextField
+                  id="outlined-helperText"
+                  label="Job Execution Schedule"
+                  defaultValue="0 15 10 15 * ?"
+                  className={classes.textField}
+                  helperText="Enter a valid cron expression"
+                  margin="normal"
+                  variant="outlined"
+                />
               </Grid>
             </Grid>
           </FormGroup>

@@ -61,7 +61,8 @@ export default function CircularIntegration(props) {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      createDatabricksResource(props.auth.idToken, "cluster", props.payload).then((event)=> {
+
+      createDatabricksResource(props.auth.idToken, props.resource, props.payload).then((event)=> {
           console.log("EVENT", event);
           setSuccess(true);
           setLoading(false);
@@ -91,7 +92,7 @@ export default function CircularIntegration(props) {
           className={buttonClassname}
           onClick={handleButtonClick}
         >
-          {success && !loading ? "Cluster Successfully Created" : props.text}
+          {success && !loading ? `Resource Successfully Created` : props.text}
         </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
       </div>

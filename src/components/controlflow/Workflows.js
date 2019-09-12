@@ -58,7 +58,7 @@ export default function Workflows() {
         </TableBody>
       </Table>
       <div className={classes.seeMore}>
-        <Link color="primary" href="javascript:;">
+        <Link color="primary">
           See more Workflows
         </Link>
       </div>

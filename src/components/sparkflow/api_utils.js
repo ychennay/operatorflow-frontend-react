@@ -30,7 +30,7 @@ const fetchDatabricksResource = async (idToken, resource, cache=true) => {
       const headers = {
         Authorization: idToken
       };
-
+      console.log(`Submitting a request to ${resource} with payload ${data}`)
       return await axios.post(
         `${API_GATEWAY_ENDPOINT}/v1/${resource}`, data,
         {

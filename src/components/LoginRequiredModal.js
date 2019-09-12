@@ -21,11 +21,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function TransitionsModal(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open] = React.useState(true);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
   return (
     <div>

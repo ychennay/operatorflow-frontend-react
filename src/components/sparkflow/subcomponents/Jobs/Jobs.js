@@ -68,9 +68,8 @@ const Jobs = props => {
   const [success, setSuccess] = useState(false);
   useEffect(() => {
     if (!state.jobs) {
-      console.log("Need to fetch cluster information.");
       fetchDatabricksResource(props.auth.idToken, "job").then(response => {
-        if (response) {
+        if (response.data) {
           setState({ jobs: response.data.jobs });
         }
       });
@@ -133,7 +132,7 @@ const Jobs = props => {
                           .split("/")
                           .reverse()[0]
                       } (v${
-                        job.settings.notebook_task.revision_timestamp
+                        job.settings.notebook_task.revision_timestamp ? job.settings.notebook_task.revision_timestamp : 0
                       })`}</TableCell>
                       <TableCell>
                         {job.settings.new_cluster.aws_attributes.zone_id}
