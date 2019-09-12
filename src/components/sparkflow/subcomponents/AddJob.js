@@ -44,11 +44,9 @@ export default function FormDialog(props) {
 
   useEffect(() => {
     if (!workspaces) {
-      console.log("Need to fetch workspace information.");
       fetchDatabricksResource(props.auth.idToken, "workspace").then(
         response => {
           if (response.data) {
-            console.log(`Setting workspace to ${response.data.objects}`);
             setWorkspaces(response.data.objects);
           }
         }
@@ -75,10 +73,8 @@ export default function FormDialog(props) {
   }
 
   const handleChange = name => event => {
-    console.log(`Changing ${name} to ${event.target.value}`);
     if (name === "notebook") {
       setErrorState(false);
-      console.log(`Setting error state to ${errorState}`);
     }
 
     setValues({
@@ -98,7 +94,6 @@ export default function FormDialog(props) {
 
   const handleSliderChange = (event, newValue) => {
     setValues({ ...values, workers: parseInt(newValue) });
-    console.log(values);
   };
 
   const prepareCreatePayload = values => {
@@ -129,8 +124,6 @@ export default function FormDialog(props) {
         "notebook_path": values.notebook
       }
     };
-
-    console.log(payload)
     return payload;
   };
 

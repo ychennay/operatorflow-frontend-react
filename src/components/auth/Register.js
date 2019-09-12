@@ -9,6 +9,7 @@ class Register extends Component {
     email: "",
     password: "",
     confirmpassword: "",
+    ready: false,
     errors: {
       cognito: null,
       blankfield: false,
@@ -50,7 +51,6 @@ class Register extends Component {
         }
       });
 
-      console.log(signUpResponse);
       this.props.history.push("/welcome");
 
     } catch(error){
@@ -67,13 +67,20 @@ class Register extends Component {
   };
 
   onInputChange = event => {
-    console.log(`${event.target.id}: ${event.target.value}`);
     this.setState({
       [event.target.id]: event.target.value // this will set the target with the value into local React state
     });
 
+    if (this.state.email.includes("@") && this.state.email.split("@").reverse()[0] === "syr.edu"){
+      this.setState({ready: true});
+    } else {
+      this.setState({ready: false});
+    }
+
     // is-danger is a CSS class that indicates that the input form value is not valid, and requires modification
     document.getElementById(event.target.id).classList.remove("is-danger");
+
+
   }
 
   render() {
@@ -150,7 +157,7 @@ class Register extends Component {
             </div>
             <div className="field">
               <p className="control">
-                <button disabled className="button is-success">
+                <button disabled={!this.state.ready} className="button is-success">
                   Register
                 </button>
               </p>

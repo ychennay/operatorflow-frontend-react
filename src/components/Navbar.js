@@ -38,7 +38,7 @@ export default class Navbar extends Component {
             <a href="/sparkflow" className="navbar-item">
               SparkFlow
             </a>
-            <a href="https://www.kubeflow.org" className="navbar-item">
+            <a href="https://kube.operatorflow.io" className="navbar-item">
               KubeFlow
             </a>
             <a href="/dashboard" className="navbar-item">

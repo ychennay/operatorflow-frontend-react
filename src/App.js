@@ -33,14 +33,10 @@ class App extends Component {
   };
 
   setAuthStatus = authenticated => {
-    console.log(`Authentication status is being set to ${authenticated}`);
     this.setState({ isAuthenticated: authenticated });
   };
 
   setUser = user => {
-    user
-      ? console.log(`User is being set to ${user.username}`)
-      : console.log("User is being set to null.");
     this.setState({ user: user });
   };
 
@@ -49,7 +45,6 @@ class App extends Component {
   };
 
   setDatabricksToken = token => {
-    console.log(`Setting token as ${token}`);
     this.setState({ databricksToken: token });
   };
 
@@ -57,7 +52,6 @@ class App extends Component {
     try {
       const session = await Auth.currentSession();
       this.setAuthStatus(true);
-      console.log(session);
       const user = await Auth.currentAuthenticatedUser();
       this.setUser(user);
       const idToken = session.idToken.jwtToken; // grab the JWT token and store in memory

@@ -77,7 +77,6 @@ const Jobs = props => {
   });
 
   const handleRun = job => {
-    console.log(`Request to run ${job.job_id}`);
     createDatabricksResource(props.auth.idToken, "run", {
       job_id: job.job_id
     }).then(result => console.log(result));
@@ -197,15 +196,13 @@ const Jobs = props => {
               size="small"
               variant="text"
               onClick={() => {
-                console.log("Refreshing cache.")
                 setLoading(true);
                 fetchDatabricksResource(
                   props.auth.idToken,
                   "job",
-                  true
+                  false
                 ).then(response => {
                   if (response.data) {
-                      console.log("New cluster data:", response.data.clusters)
                       setState({clusters: response.data.clusters});
                     setLoading(false);
                     setSuccess(true);

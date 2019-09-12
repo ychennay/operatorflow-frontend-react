@@ -51,7 +51,7 @@ const cardObjects = [
       "Run batch data processing or machine learning inference/training jobs on Tensorflow, distributed behind a Kubeernetes cluster and supported with Istio.",
     imageLink:
       "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/kubeflow-second.png",
-    pushHistory: "https://www.kubeflow.org"
+    pushHistory: "/"
   },
   {
     title: "SparkFlow",
