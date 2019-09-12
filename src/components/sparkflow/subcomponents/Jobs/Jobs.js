@@ -87,7 +87,7 @@ const Jobs = props => {
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
-        action={<AddJob text={"Register New Job"} />}
+        action={<AddJob {...props} text={"Register New Job"} />}
         title="Registered Spark Jobs"
       />
       <Divider />

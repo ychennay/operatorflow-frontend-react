@@ -53,7 +53,7 @@ const Runs = props => {
 
   useEffect(() => {
     if (!state.runs) {
-      console.log("Need to fetch workspace information.");
+      console.log("Need to fetch runs information.");
       fetchDatabricksResource(props.auth.idToken, "run").then(response => {
         if (response.data) {
           setState({ runs: response.data.runs });

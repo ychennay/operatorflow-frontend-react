@@ -10,7 +10,8 @@ export default function  Copyright() {
       <br/>
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-      </Link>{' '}
+      {' '}
+      </Link>
       {new Date().getFullYear()}
       {'.'}
     </Typography>

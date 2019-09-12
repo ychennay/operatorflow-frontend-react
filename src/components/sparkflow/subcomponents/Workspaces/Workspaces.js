@@ -19,6 +19,11 @@ import {
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import RefreshIcon from "@material-ui/icons/Refresh";
+import Tooltip from "@material-ui/core/Tooltip";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -42,6 +47,9 @@ const Workspaces = props => {
   const classes = useStyles();
 
   const [state, setState] = useState({workspaces: null});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   useEffect(()=> {
     if (!state.workspaces) { 
       console.log("Need to fetch workspace information.");
@@ -60,6 +68,34 @@ const Workspaces = props => {
       <CardHeader
         subtitle={`${state.workspaces.length} in total`}
         title="Workspaces"
+        action={
+          loading ? (
+            <CircularProgress className={classes.progress} />
+          ) : (
+            <Button
+              size="small"
+              variant="text"
+              onClick={() => {
+                setLoading(true);
+                fetchDatabricksResource(
+                  props.auth.idToken,
+                  "workspace",
+                  true
+                ).then(response => {
+                  if (response.data) {
+                    setState({ workspaces: response.data.objects });
+                    setLoading(false);
+                    setSuccess(true);
+                  }
+                });
+              }}
+            >
+              <Tooltip title="Update data for latest changes">
+                <RefreshIcon size="large" />
+              </Tooltip>
+            </Button>
+          )
+        }
       />
       <Divider />
       <CardContent className={classes.content}>

@@ -61,7 +61,6 @@ export default function CircularIntegration(props) {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      console.log(props.payload, "SENDING NOW")
       createDatabricksResource(props.auth.idToken, "cluster", props.payload).then((event)=> {
           console.log("EVENT", event);
           setSuccess(true);
@@ -88,7 +87,7 @@ export default function CircularIntegration(props) {
         <Button
           variant="contained"
           color="primary"
-          disabled={success && !loading}
+          disabled={props.errorState || (success && !loading)}
           className={buttonClassname}
           onClick={handleButtonClick}
         >

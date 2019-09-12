@@ -12,9 +12,6 @@ const fetchDatabricksResource = async (idToken, resource, cache=true) => {
       if (!cache){
         headers["Cache-Control"] = "max-age=0"
       }
-
-      console.log(headers)
-
       return await axios.get(
         `${API_GATEWAY_ENDPOINT}/v1/${resource}`,
         {

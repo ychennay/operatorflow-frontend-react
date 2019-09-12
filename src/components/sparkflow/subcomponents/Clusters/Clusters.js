@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/styles";
 import {fetchDatabricksResource} from "../../api_utils";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import Grid from '@material-ui/core/Grid';
 import {
   Card,
   CardActions,
@@ -78,6 +78,7 @@ const Clusters = props => {
   return (
  
     <Card {...rest} className={clsx(classes.root, className)}>
+    {state.clusters ? <div>
       <CardHeader
         action={<AddCluster auth={props.auth} text="Launch New Cluster"/>}
         title="Spark Clusters"
@@ -114,8 +115,9 @@ const Clusters = props => {
                   <TableCell>Status</TableCell>
                 </TableRow>
               </TableHead>
+        
               <TableBody>
-                {state.clusters && state.clusters.map(cluster => (
+              {state.clusters.map(cluster => (
                   <TableRow hover key={cluster.cluster_id}>
                   <TableCell><em>{cluster.cluster_name}</em></TableCell>
                     <TableCell>{cluster.aws_attributes.ebs_volume_size}</TableCell>
@@ -143,7 +145,7 @@ const Clusters = props => {
                     </TableCell>
                   </TableRow>
                 ))}
-              </TableBody>
+              </TableBody> 
             </Table>
           </div>
         </PerfectScrollbar>
@@ -182,7 +184,11 @@ const Clusters = props => {
               </Button>
             )
           }
-      </CardActions>
+      </CardActions></div>:<Grid container spacing={3}>
+      <Grid item xs={12}>
+      <CircularProgress/>
+      </Grid>
+    </Grid>}
     </Card>
   );
 };

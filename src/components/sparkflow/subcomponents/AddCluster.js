@@ -164,7 +164,7 @@ export default function FormDialog(props) {
                   className: classes.menu
                 }
               }}
-              helperText="Availability Zone"
+              helperText="Availability Zone (Region)"
               margin="normal"
               variant="outlined"
             >

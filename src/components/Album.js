@@ -50,25 +50,29 @@ const cardObjects = [
     descriptor:
       "Run batch data processing or machine learning inference/training jobs on Tensorflow, distributed behind a Kubeernetes cluster and supported with Istio.",
     imageLink:
-      "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/kubeflow-second.png"
+      "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/kubeflow-second.png",
+    pushHistory: "https://www.kubeflow.org"
   },
   {
     title: "SparkFlow",
     descriptor:
       "Start, stop, and monitor Apache Spark jobs as interactive Databricks-managed Notebooks.",
     imageLink:
-      "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/databricks-logo.png"
+      "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/databricks-logo.png",
+    pushHistory: "/sparkflow"
   },
   {
     title: "ControlFlow",
     descriptor:
       "Manage all of your Workflows from one centralized location, export and report on your organization's data metrics.",
     imageLink:
-      "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/controlflow-logo.png"
+      "https://github.com/ychennay/ychennay.github.io/raw/master/static_images/controlflow-logo.png",
+      pushHistory: "/dashboard"
   }
 ];
 
-export default function Album() {
+
+export default function Album(props) {
   const classes = useStyles();
 
   return (
@@ -117,10 +121,10 @@ export default function Album() {
                   </Button>
                 </Grid>
                 <Grid item>
-                <Button variant="contained" color="secondary">
-                  Documentation
-                </Button>
-              </Grid>
+                  <Button variant="contained" color="secondary">
+                    Documentation
+                  </Button>
+                </Grid>
               </Grid>
             </div>
           </Container>
@@ -143,7 +147,11 @@ export default function Album() {
                     <Typography>{card.descriptor}</Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => props.history.push(card.pushHistory)}
+                    >
                       Start
                     </Button>
                     <Button size="small" color="primary">
