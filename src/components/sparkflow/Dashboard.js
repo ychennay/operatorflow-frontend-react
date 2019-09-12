@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import { TasksProgress, Clusters, Jobs, Workspaces} from "./subcomponents";
 import Runs from "./subcomponents/Runs";
+import LoginRequiredModal from "../LoginRequiredModal";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,7 +15,7 @@ const Dashboard = props => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    (props.auth.isAuthenticated) ? <div className={classes.root}>
       <Grid container spacing={6}>
         <Grid item lg={4} md={6} xl={3} xs={12}>
           <TasksProgress />
@@ -32,7 +33,7 @@ const Dashboard = props => {
         <Jobs auth={props.auth}/>
       </Grid>
       </Grid>
-    </div>
+    </div> : <LoginRequiredModal {...props}/>
   );
 };
 

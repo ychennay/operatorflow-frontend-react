@@ -21,6 +21,7 @@ import Chart from './Chart';
 import Buckets from './Buckets';
 import TileMetric from './TileMetric';
 import Workflows from './Workflows';
+import LoginRequiredModal from '../LoginRequiredModal';
 
 const drawerWidth = 240;
 
@@ -115,6 +116,7 @@ export default function Dashboard(props) {
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
+    (props.auth.isAuthenticated) ?
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -185,6 +187,5 @@ export default function Dashboard(props) {
           </Grid>
         </Container>
       </main>
-    </div>
-  );
+    </div> : <LoginRequiredModal {...props}/>);
 }

@@ -116,6 +116,11 @@ export default function Album() {
                     Tutorial
                   </Button>
                 </Grid>
+                <Grid item>
+                <Button variant="contained" color="secondary">
+                  Documentation
+                </Button>
+              </Grid>
               </Grid>
             </div>
           </Container>
@@ -139,10 +144,10 @@ export default function Album() {
                   </CardContent>
                   <CardActions>
                     <Button size="small" color="primary">
-                      View
+                      Start
                     </Button>
                     <Button size="small" color="primary">
-                      Edit
+                      Learn More
                     </Button>
                   </CardActions>
                 </Card>

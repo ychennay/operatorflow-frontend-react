@@ -145,11 +145,6 @@ class App extends Component {
                   )}
                 />
                 <Route
-                exact
-                path="/sparkflow"
-                render={props => <SparkDashboard {...props} auth={authProps} />}
-              />
-                <Route
                   exact
                   path="/welcome"
                   render={props => <Welcome {...props} auth={authProps} />}

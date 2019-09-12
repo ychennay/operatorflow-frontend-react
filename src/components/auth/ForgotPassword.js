@@ -82,7 +82,7 @@ class ForgotPassword extends Component {
             </div>
             <div className="field">
               <p className="control">
-                <button className="button is-success">Reset Password</button>
+                <button disabled className="button is-success">Reset Password</button>
               </p>
             </div>
           </form>

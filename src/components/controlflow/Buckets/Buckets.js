@@ -45,7 +45,7 @@ const Buckets = props => {
     if (!state.buckets) { 
       console.log("Need to fetch bucket information.");
       fetchDatabricksResource(props.auth.idToken, 'bucket', true).then(response => {
-        if (response){
+        if (response.data){
           setState({buckets: response.data.buckets});
         }
       });

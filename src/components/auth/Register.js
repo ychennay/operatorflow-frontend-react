@@ -150,7 +150,7 @@ class Register extends Component {
             </div>
             <div className="field">
               <p className="control">
-                <button className="button is-success">
+                <button disabled className="button is-success">
                   Register
                 </button>
               </p>

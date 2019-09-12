@@ -5,9 +5,11 @@ import Link from '@material-ui/core/Link';
 export default function  Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
+      {"Engineered for Syracuse University's College of Engineering and Computer Science."} <br/>
+      {"Original repository was forked from jspruance's aws-cognito tutorial. Thank you to the developers of the React Material UI dashboard template. "}
+      <br/>
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Engineered for Syracuse University's College of Engineering and Computer Science. Original repository was forked from jspruance's aws-cognito tutorial.
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
