@@ -2,6 +2,10 @@
 
 This repository contains the source code for the [OperatorFlow project](https://www.operatorflow.io). Note: part of this `README.md` is left over from the old forked repository documentation.
 
+## Components
+
+The source code for each of the React framework components used can be found in the `src/components` directory. This project uses the React framework and [Material UI styling framework](https://material-ui.com/). 
+
 ## Quick Setup and Start
 
 1. Clone this repository: `git clone https://github.com/ychennay/operatorflow-frontend-react.git`.
